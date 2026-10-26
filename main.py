@@ -2,21 +2,31 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
-@app.get("/users")
-def get_users(name:str=None):
-    return {
-        "name":name,
-    }
+# @app.post("/create-user")
+# def create_user(name:str,age:int):
+#     return{
+#         "name":name,
+#         "age":age
+#     }
 
-## default query
-@app.get("/products")
-def get_products(limit:int = 10):
-    return {"products":limit}
 
-## multiple query parameter
-@app.get("/items")
-def get_items(name:str=None,price:int=0):
+# @app.post("/create-user")
+# def create_user(user:dict):
+#     return{
+        
+#         "message":"User created !",
+#         "data":user
+#     }
+
+from pydantic import BaseModel
+
+class User(BaseModel):
+    name:str
+    age:int
+
+@app.post("/create-user")
+def create_user(user:User):
     return{
-        "name":name,
-        "price":price
+        "message":"User created !",
+        "data":user
     }
