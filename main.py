@@ -2,13 +2,21 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
-# Dynamic Routes 
-# @app.get("/users/{user_id}")
-# def get_users(user_id):
-#     return {"user_id":user_id}
+@app.get("/users")
+def get_users(name:str=None):
+    return {
+        "name":name,
+    }
 
+## default query
+@app.get("/products")
+def get_products(limit:int = 10):
+    return {"products":limit}
 
-## Dynamic Routes with data types
-@app.get("/users/{user_id}")
-def get_users(user_id:int):
-    return {"user_id":user_id}
+## multiple query parameter
+@app.get("/items")
+def get_items(name:str=None,price:int=0):
+    return{
+        "name":name,
+        "price":price
+    }
