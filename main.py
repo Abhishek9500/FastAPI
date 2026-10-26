@@ -2,25 +2,13 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
-# Home Route
+# Dynamic Routes 
+# @app.get("/users/{user_id}")
+# def get_users(user_id):
+#     return {"user_id":user_id}
 
-@app.get("/")
-def home():
-    return {"message":"Welcome to Home Route"}
 
-
-## About route
-
-@app.get("/about")
-
-def about():
-    return {"message":"this is about route"}
-
-# User Route
-
-@app.get("/users")
-
-def users():
-    return {
-        "users":["mohit","rohit","Amit"]
-    }
+## Dynamic Routes with data types
+@app.get("/users/{user_id}")
+def get_users(user_id:int):
+    return {"user_id":user_id}
