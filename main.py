@@ -1,32 +1,32 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
 
 app = FastAPI()
 
-# @app.post("/create-user")
-# def create_user(name:str,age:int):
-#     return{
-#         "name":name,
-#         "age":age
-#     }
+# class User(BaseModel):
+#     name:str
+#     age:int
+#     email:str
 
-
-# @app.post("/create-user")
-# def create_user(user:dict):
+# @app.post("/create_user")
+# def create_user(user:User):
 #     return{
-        
-#         "message":"User created !",
+#         "message":"User Created",
 #         "data":user
 #     }
 
-from pydantic import BaseModel
+## Nested Model
+
+class Address(BaseModel):
+    city:str
+    pincode:int
 
 class User(BaseModel):
     name:str
     age:int
+    address:Address
 
-@app.post("/create-user")
+@app.post("/create_user")
+
 def create_user(user:User):
-    return{
-        "message":"User created !",
-        "data":user
-    }
+    return user
