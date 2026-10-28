@@ -1,39 +1,40 @@
+'''
+Practice question :- (1)
+
+Create a Pydantic model named Student with these fields:
+- name: string
+- age: integer
+- branch: string
+- marks: float
+Then create a POST /create_student endpoint that accepts a Student object and returns its data.
+
+----------> Solution
+
 from fastapi import FastAPI
-from pydantic import BaseModel
+from pydantic import BaseModel,Field
 
-app= FastAPI()
+app = FastAPI()
 
-## /users/101?nitify=true
-# {
-#     "name":"Abhi",
-#     "age":23
-# }
+Students = []
 
-users = []
-
-class User(BaseModel):
+class Student(BaseModel):
     name:str
     age:int
+    branch:str
+    marks:float = Field(gt=0)
 
-@app.post("/users")
-def create_user(user:User):
-    users.append(user)
+
+@app.get("/student")
+def get_student():
+    return Students
+
+@app.post("/student")
+def create_student(student:Student):
+    Students.append(student)
     return{
-        "message":"user created !",
-        "data":user
+        "message":"Student created successfully",
+        "data":student
     }
 
-
-@app.put("/users/{user_id}")
-def updated_user(user_id:int,user:User,notify:bool=False):
-    if user_id < len(users):
-        users[user_id] = user
-
-        return{
-            "message":"userd updated  !",
-            "notify":notify,
-            "data":user
-        }
-    return{
-        "error":"User not found"
-    }
+'''
+Practice question :- (2)
