@@ -1,21 +1,35 @@
 from fastapi import FastAPI,Request
+import sqlite3
 
 app = FastAPI()
 
-@app.middleware("http")
-async def log_request(request:Request,call_next):
-    print("method:",request.method)
+# connect to database
+conn = sqlite3.connect("users.db")
 
-    print("URL:",request.url)
+# create a cursor
+cursor = conn.cursor()
 
-    response = await call_next(request)
+# create a table
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS users(
+        id INTEGER PRIMARY KEY,
+        name TEXT,
+        age INTEGER
+    )
+""")
 
-    print("status code",response.status_code)
+# Insert Data
+cursor.execute(
+    "INSERT INTO users (name, age) VALUES (?, ?)",
+    ("Abhishek", 21)
+)
 
-    return response
+# save changes
+conn.commit()
 
-@app.get("/")
-def home():
-    return{
-        "message":"Hello world"
-    }
+# fetch data
+cursor.execute("SELECT * FROM users")
+print(cursor.fetchall())
+
+# close connection
+conn.close()
