@@ -1,34 +1,21 @@
-from fastapi import FastAPI,Depends,Header,HTTPException
+from fastapi import FastAPI,Request
 
 app = FastAPI()
 
-def get_message():
-    return "Welcome to FastApi"
+@app.middleware("http")
+async def log_request(request:Request,call_next):
+    print("method:",request.method)
 
-@app.get("/home")
-def home(data:str=Depends(get_message)):
-    return {"data":data}
+    print("URL:",request.url)
 
-@app.get("/about")
-def about(message:str=Depends(get_message)):
-    return message
+    response = await call_next(request)
 
+    print("status code",response.status_code)
 
-def verify_token(token:str=Header(None)):
-    if token != "Abhi1234":
-        raise HTTPException(
-            status_code=401,
-            detail="Unauthorized"
-        )
+    return response
+
+@app.get("/")
+def home():
     return{
-        "user":"Authorized User"
+        "message":"Hello world"
     }
-
-@app.get("/secure-data")
-def secure_data(user=Depends(verify_token)):
-    return{
-        "message":"secure data accessed",
-        "user":user
-    }
-
-
