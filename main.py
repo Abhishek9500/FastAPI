@@ -3,7 +3,5 @@ from fastapi import FastAPI
 app = FastAPI()
 
 @app.get("/")
-
 def home():
-    return {"message":"Hello world from FastAPI VENV"}
-
+    return {"message":"This is main route"}
